@@ -17,7 +17,7 @@ matrix:
     script: "./scalafmt --test"
   - env: PROJECT=docs
     jdk: openjdk8
-    if: branch = master AND type != pull_request
+    if: (branch = master OR tag IS present) AND type != pull_request
     before_install:
     - export PATH=${PATH}:./vendor/bundle
     - if [ "$TRAVIS_BRANCH" == "master" -a "$TRAVIS_PULL_REQUEST" == "false" ]; then
