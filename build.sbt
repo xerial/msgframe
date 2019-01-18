@@ -191,7 +191,7 @@ lazy val main =
       name := "msgframe-main",
       description := "command line tools of msgframe",
       buildInfoPackage := "wvlet.msgframe.main",
-      packMain := Map("msgframe" -> "wvlet.msgframe.main.MsgFrameMain"),
+      packMain := Map("mf" -> "wvlet.msgframe.main.MsgFrameMain"),
       libraryDependencies ++= Seq(
         "org.wvlet.airframe" %% "airframe-launcher" % AIRFRAME_VERSION,
         "org.wvlet.airframe" %% "airframe-metrics"  % AIRFRAME_VERSION
