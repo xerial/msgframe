@@ -100,7 +100,8 @@ lazy val scaladoc =
 
 lazy val jvmProjects: Seq[ProjectReference] = Seq[ProjectReference](
   sql,
-  main
+  main,
+  api
 )
 
 lazy val projectJVM =
@@ -198,3 +199,15 @@ lazy val main =
       )
     )
     .dependsOn(sql)
+
+lazy val api =
+  project
+    .disablePlugins(PackPlugin)
+    .in(file("msgframe-api"))
+    .settings(buildSettings)
+    .settings(
+      name := "msgframe-api",
+      description := "MessageFrame service API",
+      libraryDependencies ++= Seq(
+        )
+    )

@@ -1,0 +1,46 @@
+package msgframe.service.api
+
+message Dataset {
+  id: string
+  description: optional[string]
+  // Expiration window (e.g., "-3M" retain data within last 3 months)
+  expirationWindow: optional[string]
+  labels: map[string, any]
+  createdAt: timestamp
+  updatedAt: timestamp
+}
+
+message Table {
+  id: string,
+  kind: TableType,
+  description: string,
+  labels: map[string, any],
+  schema: TableSchema,
+  timePartitioning: optional[TimePartitioning],
+  expirationWindow: optional[string],
+  createdAt: timestamp,
+  updatedAt: timestamp,
+}
+
+enum TableType {
+  REGULAR, EXTERNAL, VIEW
+}
+
+message TableSchema {
+  columns: array[TableColumn]
+}
+
+message TableColumn {
+  name: string,
+  columnType: string,
+  isNullable: boolean = true,
+  description: optional[string],
+}
+
+message wvlet.msgframe.api.iam.User {
+  id: string
+  name: string,
+  createdAt: timestamp,
+  updatedAt: timestamp,
+}
+
