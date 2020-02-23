@@ -61,9 +61,7 @@ class SQLParserTest extends AirframeSpec {
   }
 
   def roundtrip(s: Seq[TestQuery]): Unit = {
-    s.foreach { sql =>
-      roundtrip(sql)
-    }
+    s.foreach { sql => roundtrip(sql) }
   }
 
   "parse selection queries" in {

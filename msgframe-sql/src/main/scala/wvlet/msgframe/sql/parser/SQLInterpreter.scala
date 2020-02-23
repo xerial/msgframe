@@ -79,9 +79,7 @@ class SQLInterpreter extends SqlBaseBaseVisitor[Any] with LogSupport {
   override def visitNamedQuery(ctx: NamedQueryContext): WithQuery = {
     val name = visitIdentifier(ctx.name)
     val columnAliases = Option(ctx.columnAliases()).map { x =>
-      x.identifier().asScala.map { i =>
-          visitIdentifier(i)
-        }.toSeq
+      x.identifier().asScala.map { i => visitIdentifier(i) }.toSeq
     }
     WithQuery(name, visitQuery(ctx.query()), columnAliases)
   }
@@ -128,9 +126,7 @@ class SQLInterpreter extends SqlBaseBaseVisitor[Any] with LogSupport {
       val sortKeys = ctx
         .sortItem()
         .asScala
-        .map { x =>
-          visitSortItem(x)
-        }
+        .map { x => visitSortItem(x) }
         .toSeq
       Sort(inputRelation, sortKeys)
     }
@@ -198,9 +194,7 @@ class SQLInterpreter extends SqlBaseBaseVisitor[Any] with LogSupport {
     }
 
     val selectItem: Seq[SelectItem] = ctx
-      .selectItem().asScala.map { x =>
-        visit(x).asInstanceOf[SelectItem]
-      }.toSeq
+      .selectItem().asScala.map { x => visit(x).asInstanceOf[SelectItem] }.toSeq
 
     val withAggregation = {
       if (ctx.groupBy() == null) {
@@ -223,12 +217,7 @@ class SQLInterpreter extends SqlBaseBaseVisitor[Any] with LogSupport {
 
         // group by
         val groupByKeys =
-          gb.expression()
-            .asScala
-            .map { x =>
-              GroupingKey(expression(x))
-            }
-            .toSeq
+          gb.expression().asScala.map { x => GroupingKey(expression(x)) }.toSeq
 
         // having
         val having = Option(ctx.having).map(expression(_))
@@ -587,13 +576,9 @@ class SQLInterpreter extends SqlBaseBaseVisitor[Any] with LogSupport {
   override def visitOver(ctx: OverContext): Window = {
     // PARTITION BY
     val partition = Option(ctx.PARTITION())
-      .map { p =>
-        ctx.partition.asScala.map(expression(_)).toSeq
-      }.getOrElse(Seq.empty)
+      .map { p => ctx.partition.asScala.map(expression(_)).toSeq }.getOrElse(Seq.empty)
     val orderBy = Option(ctx.ORDER())
-      .map { o =>
-        ctx.sortItem().asScala.map(visitSortItem(_)).toSeq
-      }.getOrElse(Seq.empty)
+      .map { o => ctx.sortItem().asScala.map(visitSortItem(_)).toSeq }.getOrElse(Seq.empty)
     val windowFrame = Option(ctx.windowFrame()).map(visitWindowFrame(_))
 
     Window(partition, orderBy, windowFrame)
@@ -601,9 +586,7 @@ class SQLInterpreter extends SqlBaseBaseVisitor[Any] with LogSupport {
 
   override def visitWindowFrame(ctx: WindowFrameContext): WindowFrame = {
     val s = visitFrameBound(ctx.start)
-    val e = Option(ctx.BETWEEN()).map { x =>
-      visitFrameBound(ctx.end)
-    }
+    val e = Option(ctx.BETWEEN()).map { x => visitFrameBound(ctx.end) }
     if (ctx.RANGE() != null) {
       WindowFrame(RangeFrame, s, e)
     } else {
@@ -645,13 +628,9 @@ class SQLInterpreter extends SqlBaseBaseVisitor[Any] with LogSupport {
   }
 
   override def visitFunctionCall(ctx: FunctionCallContext): FunctionCall = {
-    val name = ctx.qualifiedName().getText
-    val filter: Option[Expression] = Option(ctx.filter()).map { f: FilterContext =>
-      expression(f.booleanExpression())
-    }
-    val over: Option[Window] = Option(ctx.over()).map { o: OverContext =>
-      visitOver(o)
-    }
+    val name                       = ctx.qualifiedName().getText
+    val filter: Option[Expression] = Option(ctx.filter()).map { f: FilterContext => expression(f.booleanExpression()) }
+    val over: Option[Window]       = Option(ctx.over()).map { o: OverContext => visitOver(o) }
 
     val isDistinct = Option(ctx.setQuantifier()).map(x => visitSetQuantifier(x).isDistinct).getOrElse(false)
 
@@ -790,9 +769,7 @@ class SQLInterpreter extends SqlBaseBaseVisitor[Any] with LogSupport {
 
   override def visitDelete(ctx: DeleteContext): LogicalPlan = {
     val table = visitQualifiedName(ctx.qualifiedName())
-    val cond = Option(ctx.booleanExpression()).map { x =>
-      expression(x)
-    }
+    val cond  = Option(ctx.booleanExpression()).map { x => expression(x) }
     Delete(table, cond)
   }
 

@@ -35,7 +35,7 @@ case class Table(
     kind: String,
     schema: TableSchema,
     description: Option[String],
-    lables: Labels,
+    labels: Labels,
     expirationWindow: Option[Duration],
     timePartitioning: Option[TimePartitioning],
     createdAt: Timestamp,
@@ -70,11 +70,9 @@ case class TypeDistribution(
     typeOccurrence: Map[String, Long]
 )
 
-
 sealed trait DataAccessPolicy
 object DataAccessPolicyTarget {
 
-  case class TableTarget(tableId:String, roleType:RoleType)
-  case class ColumnFamilyTarget(tableId:String, columnNames:Seq[String], roleType:RoleType)
-  case class
+  case class TableTarget(tableId: String, roleType: RoleType)
+  case class ColumnFamilyTarget(tableId: String, columnNames: Seq[String], roleType: RoleType)
 }

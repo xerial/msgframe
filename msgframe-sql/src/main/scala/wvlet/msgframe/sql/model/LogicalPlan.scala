@@ -43,9 +43,7 @@ trait LogicalPlan extends TreeNode[LogicalPlan] with Product {
       }
     }
 
-    productIterator.flatMap { x =>
-      collectExpression(x)
-    }.toSeq
+    productIterator.flatMap { x => collectExpression(x) }.toSeq
   }
 
   def transformExpressions(rule: PartialFunction[Expression, Expression]): this.type = {
@@ -212,11 +210,12 @@ object LogicalPlan {
     override def outputAttributes: Seq[Attribute] = ???
   }
 
-  case class Aggregate(child: Relation,
-                       selectItems: Seq[SelectItem],
-                       groupingKeys: Seq[GroupingKey],
-                       having: Option[Expression])
-      extends UnaryRelation
+  case class Aggregate(
+      child: Relation,
+      selectItems: Seq[SelectItem],
+      groupingKeys: Seq[GroupingKey],
+      having: Option[Expression]
+  ) extends UnaryRelation
       with Selection {
 
     override def sig: String = {
@@ -331,11 +330,12 @@ object LogicalPlan {
     override def outputAttributes: Seq[Attribute] = ??? // TODO
     override def sig: String                      = s"Lt(${query.sig})"
   }
-  case class LateralView(child: Relation,
-                         exprs: Seq[Expression],
-                         tableAlias: Identifier,
-                         columnAliases: Seq[Identifier])
-      extends UnaryRelation {
+  case class LateralView(
+      child: Relation,
+      exprs: Seq[Expression],
+      tableAlias: Identifier,
+      columnAliases: Seq[Identifier]
+  ) extends UnaryRelation {
     override def outputAttributes: Seq[Attribute] = ??? // TODO
     override def sig: String                      = s"LV(${child.sig})"
   }
@@ -360,11 +360,12 @@ object LogicalPlan {
     override def sig = "CT"
   }
 
-  case class CreateTableAs(table: QName,
-                           ifNotEotExists: Boolean,
-                           columnAliases: Option[Seq[Identifier]],
-                           query: Relation)
-      extends DDL {
+  case class CreateTableAs(
+      table: QName,
+      ifNotEotExists: Boolean,
+      columnAliases: Option[Seq[Identifier]],
+      query: Relation
+  ) extends DDL {
     override def sig                              = s"CT(${query.sig})"
     override def inputAttributes: Seq[Attribute]  = query.inputAttributes
     override def outputAttributes: Seq[Attribute] = Nil

@@ -39,9 +39,7 @@ object SQLGenerator extends LogSupport {
         val b = seqBuilder
         b += "INSERT INTO"
         b += printExpression(table)
-        aliases.map { x =>
-          b += s"(${x.map(printExpression).mkString(", ")})"
-        }
+        aliases.map { x => b += s"(${x.map(printExpression).mkString(", ")})" }
         b += printRelation(query)
         b.result().mkString(" ")
       case Delete(table, condOpt) =>
@@ -277,9 +275,7 @@ object SQLGenerator extends LogSupport {
         val e = if (ifNotExists) " IF NOT EXISTS " else ""
         val aliases =
           columnAliases
-            .map { x =>
-              s"(${x.map(printExpression).mkString(", ")})"
-            }.getOrElse("")
+            .map { x => s"(${x.map(printExpression).mkString(", ")})" }.getOrElse("")
         s"CREATE TABLE ${e}${name.sqlExpr}${aliases} AS ${print(query)}"
       case DropTable(table, ifExists) =>
         val b = Seq.newBuilder[String]

@@ -27,7 +27,7 @@ case class User(
     name: String,
     email: String,
     description: Option[String],
-    labels: Labels,
+    labels: Labels
 )
 
 case class UserGroup(

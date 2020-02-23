@@ -15,5 +15,5 @@
 case class Project(
     id: String,
     name: String,
-    description: Option[String],
+    description: Option[String]
 )

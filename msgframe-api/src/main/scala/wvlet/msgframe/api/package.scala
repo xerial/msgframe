@@ -34,10 +34,12 @@ package object api {
   case class LatLong(latitude: Double, longtitude: Double)
   case class Money(currencyCode: String, units: Int, nanos: Int)
 
-  case class PostalAddress(regionCode: String,
-                           languageCode: String,
-                           postalCode: String,
-                           addressLines: Seq[String],
-                           recipients: Seq[String],
-                           organization: Option[String])
+  case class PostalAddress(
+      regionCode: String,
+      languageCode: String,
+      postalCode: String,
+      addressLines: Seq[String],
+      recipients: Seq[String],
+      organization: Option[String]
+  )
 }
